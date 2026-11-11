@@ -44,7 +44,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 button.danger{color:var(--err);border-color:var(--err)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .grow{flex:1}
-input[type=file]{display:none}
+input[type=file]{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;clip:rect(0 0 0 0)}
 .status{border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;border-left:4px solid}
 .status.info{background:var(--info-bg);color:var(--info);border-color:var(--info)}
 .status.ok{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
