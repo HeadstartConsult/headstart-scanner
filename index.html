@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Headstart Scanner</title>
+<meta name="description" content="Headstart Scanner is a free document scanner that runs in your browser. Scan pages with your phone or computer and save them as a PDF. Your pages stay on your device.">
+<meta name="author" content="Fanus van der Merwe">
+<meta name="publisher" content="Headstart Consult CC">
+<meta name="theme-color" content="#06406e">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Headstart Scanner: free document scanner">
+<meta property="og:description" content="Scan documents to PDF with your phone or computer. Free, no sign-up, and your pages stay on your device.">
+<meta property="og:url" content="https://www.headstartconsult.co.za/scanner/">
+<meta property="og:image" content="https://www.headstartconsult.co.za/scanner/assets/headstart-scanner-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* Fonts are self-hosted so no visitor data goes to a font service. */
+@font-face{font-family:Poppins;font-weight:400;font-display:swap;src:url(assets/fonts/poppins-400.woff2) format("woff2")}
+@font-face{font-family:Poppins;font-weight:600;font-display:swap;src:url(assets/fonts/poppins-600.woff2) format("woff2")}
+@font-face{font-family:Poppins;font-weight:700;font-display:swap;src:url(assets/fonts/poppins-700.woff2) format("woff2")}
+:root{--navy:#06406e;--navy-d:#022643;--sky:#01b0f1;--sky-ink:#0072a3;--ink:#0b2236;--muted:#4c6274;--line:#dbe5ee;--bg:#ffffff;--soft:#f2f8fc;--amber:#ffc531}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--sky-ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.word{font-weight:700;letter-spacing:.14em;line-height:1.08;text-transform:uppercase}
+/* top bar */
+.top{border-bottom:1px solid var(--line);background:#fff}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy)}
+.brand img{height:28px}
+.brand .word{font-size:15px}
+.top a.home{font-size:14px;font-weight:600;color:var(--navy);text-decoration:none}
+/* hero */
+.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(700px 420px at 78% 30%,#0b5a96 0%,rgba(11,90,150,0) 70%),linear-gradient(135deg,var(--navy) 0%,var(--navy-d) 75%)}
+.hero .wm{position:absolute;left:-220px;top:-80px;height:640px;opacity:.08;pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding-top:72px;padding-bottom:80px}
+.hero .mark{height:56px;display:block;margin-bottom:18px}
+.hero h1{margin:0;font-size:clamp(40px,7vw,72px)}
+.hero h1 span{color:var(--sky)}
+.hero p.lead{font-size:clamp(18px,2.3vw,22px);color:#d6ecf8;margin:18px 0 26px;max-width:34ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:999px;font:600 17px/1 Poppins,sans-serif;text-decoration:none;border:2px solid transparent}
+.btn.primary{background:var(--sky);color:var(--navy-d)}
+.btn.primary:hover{background:#38c4f7}
+.btn.ghost{color:#fff;border-color:rgba(255,255,255,.45)}
+.btn.ghost:hover{border-color:#fff}
+.btn.soon{background:var(--amber);color:var(--navy-d);cursor:default}
+body[data-launch="soon"] .if-live{display:none!important}
+body[data-launch="live"] .if-soon{display:none!important}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding:0;list-style:none}
+.pills li{font-size:14px;font-weight:600;border:1.5px solid rgba(1,176,241,.7);background:rgba(1,176,241,.12);border-radius:999px;padding:4px 14px}
+/* phone illustration */
+.phone{justify-self:center;position:relative;width:230px;height:440px;border-radius:38px;background:#0a1622;border:5px solid #2a4258;box-shadow:0 30px 60px rgba(0,0,0,.45);transform:rotate(-6deg)}
+.phone:before{content:"";position:absolute;top:12px;left:50%;width:64px;height:16px;margin-left:-32px;border-radius:10px;background:#000}
+.screen{position:absolute;inset:38px 12px 22px;border-radius:20px;background:#13283b;overflow:hidden}
+.doc{position:absolute;left:26px;right:26px;top:32px;bottom:58px;background:#fff;border-radius:5px;padding:18px 14px;transform:rotate(2deg)}
+.doc i{display:block;height:7px;border-radius:4px;background:#c9d6e2;margin-bottom:10px}
+.doc i.h{height:12px;width:60%;background:var(--navy);margin-bottom:18px}
+.doc i.s{width:70%}
+.c{position:absolute;width:28px;height:28px;border:5px solid var(--sky)}
+.c1{left:12px;top:20px;border-right:0;border-bottom:0;border-radius:8px 0 0 0}.c2{right:12px;top:20px;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+.c3{left:12px;bottom:46px;border-right:0;border-top:0;border-radius:0 0 0 8px}.c4{right:12px;bottom:46px;border-left:0;border-top:0;border-radius:0 0 8px 0}
+.scan{position:absolute;left:8px;right:8px;top:30%;height:3px;background:var(--sky);box-shadow:0 0 14px 5px rgba(1,176,241,.55);animation:scan 3.2s ease-in-out infinite alternate}
+@keyframes scan{to{top:68%}}
+@media (prefers-reduced-motion:reduce){.scan{animation:none;top:46%}}
+.shutter{position:absolute;bottom:9px;left:50%;width:36px;height:36px;margin-left:-18px;border-radius:50%;background:#fff}
+.sticker{position:absolute;right:-34px;top:-30px;width:118px;height:118px;transform:rotate(14deg)}
+.sticker svg{position:absolute;inset:0}
+.sticker b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:18px;line-height:1.05;color:var(--navy-d);letter-spacing:.04em}
+/* sections */
+section{padding:64px 0}
+section.soft{background:var(--soft)}
+h2{font-size:clamp(26px,3.6vw,34px);line-height:1.2;color:var(--navy);margin:0 0 10px}
+.kicker{font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--sky-ink);margin:0 0 6px}
+.intro{color:var(--muted);max-width:60ch;margin:0 0 32px}
+.grid{display:grid;gap:18px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.card h3{margin:10px 0 6px;font-size:18px;color:var(--navy)}
+.card p{margin:0;color:var(--muted);font-size:15.5px}
+.num{display:inline-flex;width:38px;height:38px;border-radius:50%;align-items:center;justify-content:center;font-weight:700;color:#fff;background:var(--navy)}
+.step:nth-child(even) .num{background:var(--sky);color:var(--navy-d)}
+.priv{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.checks{list-style:none;margin:0;padding:0}
+.checks li{position:relative;padding-left:40px;margin-bottom:16px}
+.checks li:before{content:"";position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;background:var(--sky) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23022643' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/18px no-repeat}
+.note{border-left:4px solid var(--sky);background:#fff;border-radius:0 12px 12px 0;padding:16px 18px;color:var(--muted);font-size:15px}
+.note b{color:var(--ink)}
+details{background:#fff;border:1px solid var(--line);border-radius:12px;padding:0 18px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600;color:var(--navy);padding:16px 0;list-style-position:outside}
+details p{margin:0 0 16px;color:var(--muted)}
+.final{background:linear-gradient(135deg,var(--navy),var(--navy-d));color:#fff;text-align:center}
+.final h2{color:#fff}
+.final p{color:#cfe6f4;margin:0 auto 24px;max-width:52ch}
+.final .cta{justify-content:center}
+footer{background:#011a2f;color:#9fb8cb;font-size:14px;padding:28px 0}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+footer a{color:#cfe6f4}
+footer p{margin:0}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr;padding-top:48px;padding-bottom:56px}
+  .phone{margin-top:24px}
+  .g4{grid-template-columns:1fr 1fr}
+  .g3,.priv{grid-template-columns:1fr}
+}
+@media (max-width:520px){.g4{grid-template-columns:1fr}.sticker{right:-16px}.top a.home{display:none}}
+</style>
+</head>
+<!-- Change data-launch to "live" once the scanner is published at app/ -->
+<body data-launch="soon">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="Headstart Scanner home"><img src="assets/mark.svg" alt=""><span class="word">Headstart Scanner</span></a>
+    <a class="home" href="https://www.headstartconsult.co.za/">Headstart Consult CC</a>
+  </div>
+</header>
+
+<main>
+<div class="hero">
+  <img class="wm" src="assets/mark-light.svg" alt="">
+  <div class="wrap">
+    <div>
+      <img class="mark" src="assets/mark-light.svg" alt="">
+      <h1 class="word">Headstart<br><span>Scanner</span></h1>
+      <p class="lead">Scan documents to PDF with your phone or computer. Free, right in your browser, and your pages stay on your device.</p>
+      <div class="cta">
+        <span class="btn soon if-soon" role="status">Coming soon</span>
+        <a class="btn primary if-live" href="app/">Open the scanner</a>
+        <a class="btn ghost" href="#how">See how it works</a>
+      </div>
+      <ul class="pills" aria-label="Highlights"><li>Free</li><li>No sign-up</li><li>Nothing to install</li><li>Built with POPIA in mind</li></ul>
+    </div>
+    <div class="phone" aria-hidden="true">
+      <div class="screen"><div class="doc"><i class="h"></i><i></i><i></i><i class="s"></i><i></i><i></i><i class="s"></i><i></i></div><span class="c c1"></span><span class="c c2"></span><span class="c c3"></span><span class="c c4"></span><div class="scan"></div><div class="shutter"></div></div>
+      <div class="sticker if-soon"><svg viewBox="0 0 200 200"><polygon fill="#ffc531" stroke="#fff" stroke-width="7" stroke-linejoin="round" points="196.0,100.0 180.8,114.2 190.2,132.8 171.0,141.0 173.5,161.7 152.7,162.8 148.0,183.1 128.0,177.1 116.7,194.5 100.0,182.0 83.3,194.5 72.0,177.1 52.0,183.1 47.3,162.8 26.5,161.7 29.0,141.0 9.8,132.8 19.2,114.2 4.0,100.0 19.2,85.8 9.8,67.2 29.0,59.0 26.5,38.3 47.3,37.2 52.0,16.9 72.0,22.9 83.3,5.5 100.0,18.0 116.7,5.5 128.0,22.9 148.0,16.9 152.7,37.2 173.5,38.3 171.0,59.0 190.2,67.2 180.8,85.8"/></svg><b>COMING<br>SOON</b></div>
+    </div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2>From paper to PDF in four steps</h2>
+    <p class="intro">Open the scanner in your browser on a phone, tablet or computer. There is nothing to download and no account to create.</p>
+    <div class="grid g4">
+      <div class="card step"><span class="num">1</span><h3>Add a page</h3><p>Take a photo with your camera, or choose photos you already have. On a computer you can also drag images onto the page.</p></div>
+      <div class="card step"><span class="num">2</span><h3>Check the edges</h3><p>The scanner finds the page edges for you. Drag a corner to adjust, rotate the page, or use the whole photo.</p></div>
+      <div class="card step"><span class="num">3</span><h3>Enhance</h3><p>Pick Auto, Original, Greyscale, or Black &amp; white to make the text easy to read.</p></div>
+      <div class="card step"><span class="num">4</span><h3>Save as PDF</h3><p>Add more pages, name the file, choose A4, US Letter or the scan's own size, and pick a file size. Then save it, or share it where your device allows.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="privacy">
+  <div class="wrap priv">
+    <div>
+      <p class="kicker">Your privacy</p>
+      <h2>Your documents never leave your device</h2>
+      <p class="intro" style="margin-bottom:0">IDs, payslips, leases and bank statements hold personal information. Headstart Scanner does all of its work inside your own browser, so those pages are never sent to Headstart Consult CC or to anyone else.</p>
+    </div>
+    <div>
+      <ul class="checks">
+        <li><b>Processed on your device.</b> Photos, crops and PDFs are made in your browser, not on a server.</li>
+        <li><b>Nothing stored by us.</b> Headstart Consult CC does not receive, see, or keep your scans.</li>
+        <li><b>No account, no sign-up.</b> We do not ask for your name, e-mail or phone number.</li>
+        <li><b>Built with POPIA in mind.</b> Because your documents are never collected, the personal information in them stays under your control, in line with the Protection of Personal Information Act, 2013.</li>
+      </ul>
+      <p class="note"><b>Good to know:</b> like any website, our web host may keep standard technical logs (such as your IP address and browser type) when this page loads. These never include your documents. Once you save or share a PDF, keeping it safe is up to you, so delete scans from shared devices when you are done.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <p class="kicker">Questions</p>
+    <h2>Good to know</h2>
+    <div style="max-width:780px;margin-top:22px">
+      <details><summary>Is it really free?</summary><p>Yes. There is no fee, no trial period and no sign-up. The scanner runs on your own device, so there is nothing for us to charge for.</p></details>
+      <details><summary>What do I need?</summary><p>A phone, tablet or computer with an up-to-date web browser. To take photos directly, your device needs a camera; otherwise you can choose images you already have.</p></details>
+      <details><summary>Can I scan more than one page?</summary><p>Yes. Add as many pages as you need, put them in order, and save them together as one PDF.</p></details>
+      <details><summary>Is a scan the same as a certified copy?</summary><p>No. A scan is a copy, not an original. Where an organisation asks for a certified copy or the original document, a scan will not replace it. Only scan documents you are entitled to copy.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Scan it. Save it. Keep it private.</h2>
+    <p class="if-soon">Headstart Scanner is coming soon to headstartconsult.co.za. Follow Headstart Consult CC to hear when it goes live.</p>
+    <p class="if-live">Free, in your browser, and your pages stay on your device.</p>
+    <div class="cta">
+      <span class="btn soon if-soon" role="status">Coming soon</span>
+      <a class="btn primary if-live" href="app/">Open the scanner</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Fanus van der Merwe. All rights reserved.<br>Published by Headstart Consult CC (registered as Headstartconsult CC, Reg. No. 2008/255121/23)<br>P.O. Box 1086, Sanlamhof, Bellville, 7532 · <a href="https://www.headstartconsult.co.za/">www.headstartconsult.co.za</a></p>
+    <p>This page uses no cookies, trackers or analytics.</p>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Free Document Scanner</title>
+<meta name="description" content="Free document scanner by Headstart Consult CC. Scan pages with your phone or computer and save them as a PDF. Everything stays on your device.">
+<meta name="theme-color" content="#123a5a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --text:#14202b; --muted:#5a6b7b; --line:#d9e0e7;
+  --brand:#123a5a; --brand-ink:#ffffff; --accent:#0f8b8d; --warn-bg:#fff6e0; --warn:#7a5200;
+  --ok-bg:#e6f6ef; --ok:#11643f; --info-bg:#e8f1fa; --info:#123a5a; --err-bg:#fdeaea; --err:#8a1f1f;
+  --radius:12px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1720; --surface:#17222d; --text:#e6edf3; --muted:#9fb0c0; --line:#2a3947;
+    --brand:#5aa6e0; --brand-ink:#08131d; --accent:#3cc2c4; --warn-bg:#3a2e10; --warn:#f3cf7a;
+    --ok-bg:#123227; --ok:#7fdcb0; --info-bg:#132a3e; --info:#a9d1f2; --err-bg:#3a1717; --err:#f3a3a3;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+header{background:var(--brand);color:var(--brand-ink);padding:14px 16px}
+header .wrap{display:flex;align-items:center;gap:10px}
+header h1{font-size:1.15rem;margin:0;font-weight:650}
+header small{display:block;opacity:.85;font-size:.8rem}
+.wrap{max-width:860px;margin:0 auto}
+main{padding:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+h2{font-size:1.05rem;margin:0 0 8px}
+.steps{display:flex;gap:6px;margin:0 0 14px;padding:0;list-style:none;flex-wrap:wrap}
+.steps li{font-size:.82rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.steps li.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.steps li.done{color:var(--ok);border-color:var(--ok)}
+button,.btn{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+button.primary,.btn.primary{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:600}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.danger{color:var(--err);border-color:var(--err)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grow{flex:1}
+input[type=file]{display:none}
+.status{border-radius:10px;padding:12px 14px;margin:0 0 14px;font-size:.92rem;border-left:4px solid}
+.status.info{background:var(--info-bg);color:var(--info);border-color:var(--info)}
+.status.ok{background:var(--ok-bg);color:var(--ok);border-color:var(--ok)}
+.status.warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn)}
+.status.err{background:var(--err-bg);color:var(--err);border-color:var(--err)}
+.status b{display:block;margin-bottom:2px}
+.status dl{margin:6px 0 0;display:grid;grid-template-columns:max-content 1fr;gap:2px 10px}
+.status dt{font-weight:600}
+.status dd{margin:0}
+.stage{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;background:#0b1117;border-radius:10px;overflow:hidden;display:flex;justify-content:center}
+.stage canvas{display:block;max-width:100%;height:auto}
+#preview{max-width:100%;height:auto;display:block;margin:0 auto;border-radius:6px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;border-radius:0;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.pages{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin:12px 0}
+.page{border:1px solid var(--line);border-radius:8px;padding:6px;background:var(--bg);text-align:center;font-size:.8rem}
+.page img{width:100%;height:120px;object-fit:contain;background:#fff;border-radius:4px}
+.page .row{justify-content:center;gap:2px;margin-top:4px}
+.page button{min-height:34px;padding:4px 8px;font-size:.8rem}
+label.field{display:block;margin:8px 0}
+label.field span{display:block;font-size:.85rem;color:var(--muted)}
+input[type=text],select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);width:100%;max-width:360px}
+.muted{color:var(--muted);font-size:.88rem}
+.hidden{display:none!important}
+footer{padding:16px;color:var(--muted);font-size:.82rem}
+footer a{color:inherit}
+.privacy-strip{font-size:.85rem;color:var(--muted);margin-top:4px}
+.spinner{width:18px;height:18px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite;display:inline-block;vertical-align:-3px;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="6" width="44" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M20 22h24M20 32h24M20 42h14" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <div><h1>Free Document Scanner</h1><small>by Headstart Consult CC · your pages never leave your device</small></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <ol class="steps" id="steps" aria-label="Progress">
+    <li data-step="add">1. Add a page</li>
+    <li data-step="crop">2. Check edges</li>
+    <li data-step="enhance">3. Enhance</li>
+    <li data-step="pdf">4. Save PDF</li>
+  </ol>
+
+  <div id="status" class="status info" role="status" aria-live="polite"></div>
+
+  <!-- STEP 1 -->
+  <section class="card" id="view-add">
+    <h2>Add a page</h2>
+    <p class="muted">Lay the page flat on a darker surface in good light, then take a photo or choose existing photos.</p>
+    <div class="row">
+      <label class="btn primary" for="camInput">📷 Take photo</label>
+      <input id="camInput" type="file" accept="image/*" capture="environment">
+      <label class="btn" for="fileInput">🖼️ Choose images</label>
+      <input id="fileInput" type="file" accept="image/*" multiple>
+    </div>
+    <p class="privacy-strip">🔒 Processing happens in your browser. Nothing is uploaded to Headstart Consult CC or anyone else. <a href="privacy.html">Privacy notice</a></p>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="card hidden" id="view-crop">
+    <h2>Check the page edges</h2>
+    <div class="stage" id="stage"><canvas id="cropCanvas"></canvas></div>
+    <div class="row" style="margin-top:12px">
+      <button id="btnAutoDetect" type="button">Detect again</button>
+      <button id="btnFullImage" type="button">Use whole photo</button>
+      <button id="btnRotate" type="button" title="Rotate 90°">↻ Rotate</button>
+      <span class="grow"></span>
+      <button id="btnCancelCrop" type="button">Cancel</button>
+      <button id="btnApplyCrop" type="button" class="primary">Crop page →</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="card hidden" id="view-enhance">
+    <h2>Enhance the page</h2>
+    <div class="row" style="margin-bottom:12px">
+      <div class="seg" role="group" aria-label="Filter" id="filters">
+        <button type="button" data-filter="auto" aria-pressed="true">Auto</button>
+        <button type="button" data-filter="color" aria-pressed="false">Original</button>
+        <button type="button" data-filter="grey" aria-pressed="false">Greyscale</button>
+        <button type="button" data-filter="bw" aria-pressed="false">Black &amp; white</button>
+      </div>
+    </div>
+    <canvas id="preview"></canvas>
+    <div class="row" style="margin-top:12px">
+      <button id="btnBackCrop" type="button">← Back to edges</button>
+      <span class="grow"></span>
+      <button id="btnDiscard" type="button" class="danger">Discard</button>
+      <button id="btnAddPage" type="button" class="primary">Add to document ✓</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="card" id="view-pdf">
+    <h2>Your document <span class="muted" id="pageCount">(0 pages)</span></h2>
+    <div class="pages" id="pages"></div>
+    <p class="muted" id="noPages">No pages yet. Add a page above.</p>
+    <div id="pdfControls" class="hidden">
+      <label class="field"><span>File name</span><input type="text" id="fileName" value="scan" autocomplete="off"></label>
+      <label class="field"><span>Page size</span>
+        <select id="pageSize">
+          <option value="a4">A4 (best for printing and e-mail)</option>
+          <option value="letter">US Letter</option>
+          <option value="fit">Same as the scan</option>
+        </select>
+      </label>
+      <label class="field"><span>Quality</span>
+        <select id="quality">
+          <option value="0.92">High (bigger file)</option>
+          <option value="0.8" selected>Normal</option>
+          <option value="0.6">Small file (for upload limits)</option>
+        </select>
+      </label>
+      <div class="row" style="margin-top:10px">
+        <button id="btnAddMore" type="button">+ Add another page</button>
+        <span class="grow"></span>
+        <button id="btnClear" type="button" class="danger">Delete all</button>
+        <button id="btnShare" type="button" class="hidden">Share</button>
+        <button id="btnPdf" type="button" class="primary">Save PDF ⬇</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>This free tool is offered by Headstart Consult CC. Scans are copies, not originals. Where a certified copy or an original is required, a scan will not replace it. Use it only for documents you are entitled to copy. <a href="privacy.html">Privacy notice and terms</a></p>
+  <p>© <span id="yr">2026</span> Headstartconsult. All rights reserved.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
