@@ -6,28 +6,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Free Document Scanner</title>
 <meta name="description" content="Free document scanner by Headstart Consult CC. Scan pages with your phone or computer and save them as a PDF. Everything stays on your device.">
-<meta name="theme-color" content="#123a5a">
+<meta name="theme-color" content="#06406e">
+<meta name="apple-mobile-web-app-title" content="Headstart Scan">
+<meta name="application-name" content="Headstart Scan">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 :root{
   --bg:#f5f7fa; --surface:#ffffff; --text:#14202b; --muted:#5a6b7b; --line:#d9e0e7;
-  --brand:#123a5a; --brand-ink:#ffffff; --accent:#0f8b8d; --warn-bg:#fff6e0; --warn:#7a5200;
+  --brand:#06406e; --brand-ink:#ffffff; --accent:#0a7fb5; --warn-bg:#fff6e0; --warn:#7a5200;
   --ok-bg:#e6f6ef; --ok:#11643f; --info-bg:#e8f1fa; --info:#123a5a; --err-bg:#fdeaea; --err:#8a1f1f;
   --radius:12px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0f1720; --surface:#17222d; --text:#e6edf3; --muted:#9fb0c0; --line:#2a3947;
-    --brand:#5aa6e0; --brand-ink:#08131d; --accent:#3cc2c4; --warn-bg:#3a2e10; --warn:#f3cf7a;
+    --brand:#01b0f1; --brand-ink:#04121e; --accent:#0a7fb5; --warn-bg:#3a2e10; --warn:#f3cf7a;
     --ok-bg:#123227; --ok:#7fdcb0; --info-bg:#132a3e; --info:#a9d1f2; --err-bg:#3a1717; --err:#f3a3a3;
   }
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
-header{background:var(--brand);color:var(--brand-ink);padding:14px 16px}
+header{background:#06406e;color:#fff;padding:14px 16px}
+.brandfoot{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.brandfoot img{width:64px;height:64px;border-radius:12px;background:#fff}
+.brandfoot a{font-weight:600}
 header .wrap{display:flex;align-items:center;gap:10px}
 header h1{font-size:1.15rem;margin:0;font-weight:650}
 header small{display:block;opacity:.85;font-size:.8rem}
@@ -72,7 +77,7 @@ input[type=text],select{font:inherit;padding:9px 10px;border:1px solid var(--lin
 .muted{color:var(--muted);font-size:.88rem}
 .hidden{display:none!important}
 footer{padding:16px;color:var(--muted);font-size:.82rem}
-footer a{color:inherit}
+footer a,.privacy-strip a{color:inherit}
 .privacy-strip{font-size:.85rem;color:var(--muted);margin-top:4px}
 .spinner{width:18px;height:18px;border:3px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite;display:inline-block;vertical-align:-3px;margin-right:6px}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -81,7 +86,7 @@ footer a{color:inherit}
 <body>
 <header>
   <div class="wrap">
-    <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="6" width="44" height="52" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M20 22h24M20 32h24M20 42h14" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
+    <svg width="44" height="32" viewBox="0 0 320 230" aria-label="Headstart" role="img"><g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="50"><path d="M40 35 120 115 40 195" stroke="#fff"/><path d="M140 35 220 115 140 195" stroke="#01b0f1"/></g><circle cx="288" cy="115" r="24" fill="#01b0f1"/></svg>
     <div><h1>Free Document Scanner</h1><small>by Headstart Consult CC · your pages never leave your device</small></div>
   </div>
 </header>
@@ -176,6 +181,7 @@ footer a{color:inherit}
 </main>
 
 <footer class="wrap">
+  <div class="brandfoot"><img src="logo-scan.png" alt="Headstart Scan logo" width="64" height="64"><div>A free service from <b>Headstart Consult CC</b><br><a href="https://www.headstartconsult.co.za" target="_blank" rel="noopener">www.headstartconsult.co.za</a></div></div>
   <p>This free tool is offered by Headstart Consult CC. Scans are copies, not originals. Where a certified copy or an original is required, a scan will not replace it. Use it only for documents you are entitled to copy. <a href="privacy.html">Privacy notice and terms</a></p>
   <p>© <span id="yr">2026</span> Headstartconsult. All rights reserved.</p>
 </footer>
